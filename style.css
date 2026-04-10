@@ -1,0 +1,351 @@
+/* ============================================================
+   DevFolio — Retro CRT Terminal Portfolio
+   style.css
+   ============================================================ */
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ---------- Variables ---------- */
+:root {
+  --phosphor:      #33ff33;          /* classic green phosphor */
+  --phosphor-dim:  #1a9922;          /* dimmer green */
+  --phosphor-pale: #0d4d0d;          /* very dim */
+  --phosphor-glow: rgba(51,255,51,0.12);
+  --bg:            #0a0f0a;          /* near-black with green tint */
+  --bg-screen:     #050a05;
+  --crt-bezel:     #1a1a1a;
+  --amber:         #ffb833;          /* for warnings/highlights */
+  --cyan:          #33ffee;          /* for links */
+  --red-err:       #ff4444;          /* for errors */
+  --white-out:     #d4f5d4;          /* near-white output */
+  --font-mono:     'Share Tech Mono', 'VT323', monospace;
+}
+
+/* ---------- Base ---------- */
+html, body {
+  height: 100%;
+  background: #0d0d0d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-family: var(--font-mono);
+}
+
+body {
+  padding: 16px;
+  gap: 12px;
+}
+
+/* ---------- CRT Outer bezel ---------- */
+.crt-outer {
+  width: min(98vw, 1000px);
+  height: min(calc(100dvh - 76px), 700px);
+  background: var(--crt-bezel);
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow:
+    0 0 0 2px #111,
+    0 0 60px rgba(51,255,51,0.08),
+    0 20px 60px rgba(0,0,0,0.8),
+    inset 0 0 20px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+.site-footer {
+  display: flex;
+  justify-content: center;
+  width: min(98vw, 1000px);
+}
+
+.footer-signature {
+  color: var(--white-out);
+  font-family: 'VT323', monospace;
+  font-size: clamp(1rem, 2.2vw, 1.35rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.9rem;
+  border: 1px solid rgba(51,255,51,0.24);
+  background: linear-gradient(180deg, rgba(51,255,51,0.08), rgba(51,255,51,0.02));
+  box-shadow:
+    0 0 18px rgba(51,255,51,0.12),
+    inset 0 0 18px rgba(51,255,51,0.05);
+  text-shadow:
+    0 0 8px rgba(212,245,212,0.45),
+    0 0 14px rgba(51,255,51,0.24);
+}
+
+/* ---------- CRT Screen ---------- */
+.crt-screen {
+  width: 100%;
+  height: 100%;
+  background: var(--bg-screen);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+
+  /* Slight curve distortion via border-radius */
+  box-shadow:
+    inset 0 0 60px rgba(0,0,0,0.6),
+    inset 0 0 8px rgba(51,255,51,0.05);
+}
+
+/* ---------- Scanlines ---------- */
+.scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.25) 2px,
+    rgba(0,0,0,0.25) 4px
+  );
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* ---------- CRT Glow / Vignette ---------- */
+.crt-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 60%,
+    rgba(0,0,0,0.5) 100%
+  );
+  pointer-events: none;
+  z-index: 21;
+}
+
+/* ---------- Terminal ---------- */
+.terminal {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: var(--phosphor);
+  position: relative;
+  z-index: 10;
+}
+
+/* ---------- Title Bar ---------- */
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0.8rem;
+  background: rgba(51,255,51,0.05);
+  border-bottom: 1px solid rgba(51,255,51,0.15);
+  flex-shrink: 0;
+}
+
+.bar-dots { display: flex; gap: 6px; align-items: center; }
+
+.dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  opacity: 0.7;
+}
+
+.dot-red    { background: #ff5f57; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green  { background: #28c840; }
+
+.bar-title {
+  font-size: 0.8rem;
+  color: var(--phosphor-dim);
+  letter-spacing: 0.06em;
+}
+
+.bar-right {
+  font-size: 0.7rem;
+  color: var(--phosphor-pale);
+  letter-spacing: 0.06em;
+}
+
+/* ---------- Terminal Body ---------- */
+.terminal-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1rem 1.2rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: thin;
+  scrollbar-color: var(--phosphor-pale) transparent;
+}
+
+.terminal-body::-webkit-scrollbar { width: 4px; }
+.terminal-body::-webkit-scrollbar-thumb { background: var(--phosphor-pale); }
+
+/* ---------- Output ---------- */
+.output-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Output line types */
+.out-line {
+  font-size: clamp(0.78rem, 1.5vw, 0.9rem);
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--phosphor);
+  text-shadow: 0 0 8px rgba(51,255,51,0.5);
+}
+
+.out-line.dim     { color: var(--phosphor-dim); }
+.out-line.pale    { color: var(--phosphor-pale); }
+.out-line.amber   { color: var(--amber); text-shadow: 0 0 8px rgba(255,184,51,0.4); }
+.out-line.cyan    { color: var(--cyan);  text-shadow: 0 0 8px rgba(51,255,238,0.4); }
+.out-line.white   { color: var(--white-out); text-shadow: none; }
+.out-line.error   { color: var(--red-err); text-shadow: 0 0 8px rgba(255,68,68,0.4); }
+.out-line.blank   { min-height: 1rem; }
+.out-line.cmd-echo {
+  color: var(--phosphor-dim);
+  opacity: 0.7;
+}
+
+/* ASCII art lines */
+.out-line.ascii {
+  font-family: 'VT323', monospace;
+  font-size: clamp(0.7rem, 1.8vw, 1.1rem);
+  line-height: 1.2;
+  color: var(--phosphor);
+  text-shadow: 0 0 12px rgba(51,255,51,0.7);
+  letter-spacing: 0.05em;
+}
+
+/* Section headers */
+.out-line.header {
+  color: var(--amber);
+  font-size: clamp(0.8rem, 1.6vw, 0.95rem);
+  text-shadow: 0 0 10px rgba(255,184,51,0.5);
+  margin-top: 0.2rem;
+}
+
+/* Key-value rows */
+.out-line.kv {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 0.5rem;
+}
+
+.kv-key  { color: var(--cyan); }
+.kv-val  { color: var(--white-out); }
+
+/* Tag badges inline */
+.tag {
+  display: inline-block;
+  border: 1px solid var(--phosphor-dim);
+  color: var(--phosphor);
+  padding: 0 0.4rem;
+  font-size: 0.75em;
+  margin-right: 0.4rem;
+  text-shadow: none;
+}
+
+.tag.amber { border-color: var(--amber); color: var(--amber); }
+.tag.cyan  { border-color: var(--cyan);  color: var(--cyan); }
+
+/* Separator */
+.out-line.sep {
+  color: var(--phosphor-pale);
+  letter-spacing: 0.06em;
+}
+
+/* Typing animation */
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ---------- Input Row ---------- */
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.prompt {
+  color: var(--phosphor);
+  font-size: clamp(0.78rem, 1.5vw, 0.88rem);
+  white-space: nowrap;
+  text-shadow: 0 0 8px rgba(51,255,51,0.5);
+  flex-shrink: 0;
+}
+
+.input-wrap {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.cmd-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--phosphor);
+  font-family: var(--font-mono);
+  font-size: clamp(0.78rem, 1.5vw, 0.88rem);
+  caret-color: transparent;       /* we use custom block cursor */
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 8px rgba(51,255,51,0.5);
+  width: 100%;
+}
+
+.cursor-block {
+  color: var(--phosphor);
+  font-size: clamp(0.78rem, 1.5vw, 0.88rem);
+  animation: blink-cursor 1s step-end infinite;
+  text-shadow: 0 0 8px rgba(51,255,51,0.7);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* ---------- Mobile hint ---------- */
+.mobile-hint {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--phosphor-pale);
+  letter-spacing: 0.1em;
+  pointer-events: none;
+  z-index: 30;
+}
+
+@media (min-width: 640px) { .mobile-hint { display: none; } }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  body { padding: 10px; gap: 10px; }
+  .crt-outer   { border-radius: 8px; padding: 6px; }
+  .crt-screen  { border-radius: 4px; }
+  .terminal-body { padding: 0.7rem 0.8rem 0.4rem; }
+  .bar-right   { display: none; }
+  .out-line.kv { grid-template-columns: 120px 1fr; }
+  .footer-signature { letter-spacing: 0.12em; }
+}
+
+/* ---------- Flicker animation (boot) ---------- */
+@keyframes screen-flicker {
+  0%   { opacity: 0; }
+  10%  { opacity: 0.8; }
+  12%  { opacity: 0.3; }
+  14%  { opacity: 0.9; }
+  100% { opacity: 1; }
+}
+
+.crt-screen { animation: screen-flicker 0.6s ease both; }

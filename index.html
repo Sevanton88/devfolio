@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevFolio — Terminal Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- CRT screen wrapper -->
+  <div class="crt-outer">
+    <div class="crt-screen">
+
+      <!-- Scanlines overlay -->
+      <div class="scanlines" aria-hidden="true"></div>
+
+      <!-- Glow overlay -->
+      <div class="crt-glow" aria-hidden="true"></div>
+
+      <!-- Terminal window -->
+      <div class="terminal" id="terminal">
+
+        <!-- Title bar -->
+        <div class="terminal-bar">
+          <div class="bar-dots">
+            <span class="dot dot-red"></span>
+            <span class="dot dot-yellow"></span>
+            <span class="dot dot-green"></span>
+          </div>
+          <span class="bar-title">devfolio@portfolio:~</span>
+          <span class="bar-right">bash — 80×24</span>
+        </div>
+
+        <!-- Output area -->
+        <div class="terminal-body" id="terminal-body">
+          <div class="output-wrap" id="output-wrap"></div>
+
+          <!-- Input row -->
+          <div class="input-row" id="input-row">
+            <span class="prompt" id="prompt">visitor@devfolio:~$</span>
+            <div class="input-wrap">
+              <input
+                type="text"
+                id="cmd-input"
+                class="cmd-input"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false"
+                aria-label="Terminal input"
+              />
+              <span class="cursor-block" id="cursor-block">█</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Mobile hint -->
+      <div class="mobile-hint">Tap the terminal to type a command</div>
+
+    </div>
+  </div>
+
+  <footer class="site-footer" aria-label="Site footer">
+    <p class="footer-signature">Dev by Dušan</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
