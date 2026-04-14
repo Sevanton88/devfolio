@@ -325,11 +325,6 @@ body {
   pointer-events: none;
   z-index: 30;
 }
-
-@media ( max-width: 640px) { 
-   .mobile-hint { opacity: 0; } 
-}
-
 /* ---------- Responsive ---------- */
 @media (max-width: 600px) {
   body { padding: 10px; gap: 10px; }
