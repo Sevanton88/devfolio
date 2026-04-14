@@ -326,7 +326,9 @@ body {
   z-index: 30;
 }
 
-@media (min-width: 640px) { .mobile-hint { display: none; } }
+@media (min-width: 640px) { 
+   .mobile-hint { opacity: 0; } 
+}
 
 /* ---------- Responsive ---------- */
 @media (max-width: 600px) {
@@ -337,7 +339,6 @@ body {
   .bar-right   { display: none; }
   .out-line.kv { grid-template-columns: 120px 1fr; }
   .footer-signature { letter-spacing: 0.12em; }
-   .mobile-hint { opacity: 0; }
 }
 
 /* ---------- Flicker animation (boot) ---------- */
